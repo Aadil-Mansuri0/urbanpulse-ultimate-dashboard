@@ -1,69 +1,96 @@
-# UrbanPulse Ultimate
+# UrbanPulse Ultimate Dashboard
 
-UrbanPulse Ultimate is an immersive city intelligence dashboard built with Python and Streamlit.
-It combines weather, AQI, flight activity, and infrastructure signals to generate a City Health Score.
+UrbanPulse Ultimate Dashboard is an immersive real-time smart city intelligence project.
+It combines live weather, AQI, flight traffic, infrastructure signals, and an AI-style City Health Score in one interactive Streamlit application.
 
-## Features
+## Highlights
 
-- Real weather data from OpenWeather with safe fallback data
-- Real AQI integration with safe fallback data
-- Live flight traffic estimation from OpenSky with safe fallback data
-- AI-style City Health Score and congestion index
-- Immersive 3D dashboard with:
-  - 3D mobility grid
-  - Globe operational view
-  - Time slider
-  - Optional live auto-refresh
+- Real weather integration (OpenWeather) with robust fallback data
+- Real AQI integration (OpenWeather Air Pollution) with fallback data
+- Live flight activity integration (OpenSky) with fallback data
+- City Health Score and congestion analytics
+- 3D visual dashboard with mobility arcs and globe view
+- Time slider and optional live refresh mode
+
+## Tech Stack
+
+- Python
+- Streamlit
+- Plotly
+- Pandas
+- Requests
+- SQLite (default) with optional MySQL backend
 
 ## Project Structure
 
-- dashboard/app.py: Streamlit dashboard entrypoint
-- data_pipeline/: Data connectors and metrics computation
-- database/schema.sql: SQLite schema for metrics logging
-- main.py: Snapshot pipeline runner
-- utils.py: Database utilities
+```text
+.
+├── dashboard/
+│   └── app.py
+├── data_pipeline/
+│   ├── airport.py
+│   ├── aqi.py
+│   ├── cities.py
+│   ├── city_metrics.py
+│   ├── flight.py
+│   ├── population.py
+│   └── weather.py
+├── database/
+│   └── schema.sql
+├── main.py
+├── utils.py
+├── requirements.txt
+├── runtime.txt
+└── .env.example
+```
 
-## Quick Start (Local)
+## Quick Start
 
 1. Install dependencies:
 
-   python3 -m pip install -r requirements.txt
+```bash
+python3 -m pip install -r requirements.txt
+```
 
-2. Run snapshot pipeline:
+2. Run pipeline snapshot:
 
-   python3 main.py
+```bash
+python3 main.py
+```
 
 3. Start dashboard:
 
-   python3 -m streamlit run dashboard/app.py --server.port 8502
+```bash
+python3 -m streamlit run dashboard/app.py --server.port 8502
+```
 
 ## Environment Variables
 
-Copy .env.example to .env and update values if needed.
+Copy `.env.example` to `.env` and configure if needed:
 
-- WEATHER_API_KEY: OpenWeather API key (optional)
-- AQI_API_KEY: Optional AQI key. If not set, WEATHER_API_KEY is reused for AQI endpoint.
-- DB_BACKEND: sqlite (default) or mysql
-- SQLITE_DB_PATH: SQLite file path (default: urbanpulse.db)
+- `WEATHER_API_KEY` (optional)
+- `AQI_API_KEY` (optional)
+- `DB_BACKEND=sqlite` or `DB_BACKEND=mysql`
+- `SQLITE_DB_PATH=urbanpulse.db`
 
 If API keys are missing, the app still runs with deterministic mock data.
 
-## Streamlit Cloud Deployment
+## Deployment (Streamlit Community Cloud)
 
 1. Push this repository to GitHub.
-2. Create a new app in Streamlit Community Cloud.
-3. Set main file path to: dashboard/app.py
-4. Add secrets if you want live APIs:
-   - WEATHER_API_KEY
-   - AQI_API_KEY (optional)
+2. Create a new app on Streamlit Community Cloud.
+3. Set app entrypoint to `dashboard/app.py`.
+4. Add secrets if you want live API-backed data.
 5. Deploy.
 
 ## Validation Commands
 
-- python3 main.py
-- python3 -m py_compile main.py utils.py dashboard/app.py data_pipeline/*.py
+```bash
+python3 main.py
+python3 -m py_compile main.py utils.py dashboard/app.py data_pipeline/*.py
+```
 
 ## Notes
 
-- SQLite database file urbanpulse.db is generated automatically.
-- For MySQL mode, set DB_BACKEND=mysql and provide MYSQL_* variables in environment.
+- Local database `urbanpulse.db` is generated automatically.
+- MySQL mode requires `MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE`.
